@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TuChef – Clases de Cocina a Domicilio</title>
+<style>
+  :root {
+    --dark:#1C1C1C; --orange:#E8621A; --cream:#F5E6C8;
+    --green:#2D6A2D; --blue:#1A4D8F; --white:#FFF;
+    --dark2:#2a2a2a; --ol:#ff8040;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Segoe UI',sans-serif;background:var(--dark);color:var(--cream);}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;width:100%;z-index:100;
+    background:rgba(28,28,28,0.96);backdrop-filter:blur(8px);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 40px;border-bottom:2px solid var(--orange);}
+  .nav-logo{display:flex;align-items:center;gap:10px;}
+  .nav-logo svg{width:48px;height:48px;}
+  .nav-brand{font-size:1.5rem;font-weight:900;}
+  .nav-brand .tu{color:var(--white);}
+  .nav-brand .chef{color:var(--orange);}
+  .nav-links{display:flex;gap:24px;list-style:none;}
+  .nav-links a{color:var(--cream);text-decoration:none;font-weight:500;transition:.2s;font-size:.95rem;}
+  .nav-links a:hover{color:var(--orange);}
+  .nav-cta{background:var(--orange);color:var(--white);border:none;
+    padding:10px 22px;border-radius:25px;font-weight:700;cursor:pointer;font-size:.9rem;transition:.2s;}
+  .nav-cta:hover{background:var(--ol);transform:scale(1.05);}
+
+  /* ── HERO ── */
+  .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;
+    text-align:center;
+    background:radial-gradient(ellipse at center,#2a1a0e 0%,var(--dark) 70%);
+    padding:110px 20px 70px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;
+    background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='2' fill='%23E8621A' fill-opacity='0.04'/%3E%3C/svg%3E");}
+  .hero-content{position:relative;z-index:1;max-width:720px;}
+  .hero-logo{margin:0 auto 28px;width:160px;height:160px;
+    background:#2a1a0e;border-radius:50%;
+    border:3px solid var(--orange);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 40px rgba(232,98,26,0.35);}
+  .hero-logo svg{width:140px;height:140px;}
+  .hero-badge{display:inline-block;background:rgba(232,98,26,.15);
+    border:1px solid var(--orange);color:var(--orange);
+    padding:6px 18px;border-radius:20px;font-size:.85rem;font-weight:600;
+    margin-bottom:18px;letter-spacing:1px;}
+  .hero h1{font-size:3.8rem;font-weight:900;line-height:1.1;margin-bottom:16px;}
+  .hero h1 .tu{color:var(--white);}
+  .hero h1 .chef{color:var(--orange);}
+  .hero p{font-size:1.15rem;color:#ccc;margin-bottom:36px;line-height:1.7;}
+  .hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .btn-primary{background:var(--orange);color:var(--white);
+    padding:14px 32px;border-radius:30px;font-weight:700;font-size:1rem;
+    border:none;cursor:pointer;transition:.25s;text-decoration:none;display:inline-block;}
+  .btn-primary:hover{background:var(--ol);transform:translateY(-2px);box-shadow:0 8px 25px rgba(232,98,26,.4);}
+  .btn-secondary{background:transparent;color:var(--cream);
+    padding:14px 32px;border-radius:30px;font-weight:700;font-size:1rem;
+    border:2px solid var(--cream);cursor:pointer;transition:.25s;
+    text-decoration:none;display:inline-block;}
+  .btn-secondary:hover{border-color:var(--orange);color:var(--orange);}
+  .hero-stats{display:flex;gap:40px;justify-content:center;margin-top:48px;flex-wrap:wrap;}
+  .stat{text-align:center;}
+  .stat-num{font-size:2rem;font-weight:900;color:var(--orange);}
+  .stat-label{font-size:.8rem;color:#999;text-transform:uppercase;letter-spacing:1px;}
+
+  /* ── SECTIONS ── */
+  section{padding:80px 20px;}
+  .container{max-width:1100px;margin:0 auto;}
+  .section-tag{color:var(--orange);font-weight:700;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .section-title{font-size:2.4rem;font-weight:900;margin-bottom:14px;}
+  .section-sub{color:#aaa;font-size:1.05rem;line-height:1.7;max-width:600px;}
+
+  /* ── ABOUT ── */
+  .about{background:var(--dark2);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;margin-top:50px;}
+  .about-features{display:flex;flex-direction:column;gap:20px;}
+  .feature-card{display:flex;align-items:flex-start;gap:16px;
+    background:rgba(232,98,26,.07);border:1px solid rgba(232,98,26,.2);
+    padding:20px;border-radius:14px;transition:.2s;}
+  .feature-card:hover{border-color:var(--orange);background:rgba(232,98,26,.12);}
+  .feat-icon{font-size:2rem;flex-shrink:0;}
+  .feat-title{font-weight:700;color:var(--orange);margin-bottom:4px;}
+  .feat-desc{color:#bbb;font-size:.9rem;line-height:1.6;}
+  .about-visual{background:linear-gradient(135deg,rgba(232,98,26,.15),rgba(26,77,143,.15));
+    border:1px solid rgba(232,98,26,.3);border-radius:20px;padding:40px;text-align:center;}
+  .cuisines{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px;}
+  .cuisine-tag{background:rgba(232,98,26,.15);border:1px solid rgba(232,98,26,.4);
+    color:var(--cream);padding:8px 16px;border-radius:20px;font-size:.85rem;transition:.2s;cursor:default;}
+  .cuisine-tag:hover{background:var(--orange);color:var(--white);}
+
+  /* ── PRICE ── */
+  .plans{background:var(--dark);}
+  .price-wrap{display:flex;justify-content:center;margin-top:50px;}
+  .price-card{background:linear-gradient(135deg,#2a1a0e,var(--dark2));
+    border:2px solid var(--orange);border-radius:28px;
+    padding:50px 44px;max-width:540px;width:100%;text-align:center;
+    box-shadow:0 20px 60px rgba(232,98,26,.25);}
+  .price-icon{font-size:4rem;margin-bottom:20px;}
+  .price-amount{font-size:4rem;font-weight:900;color:var(--orange);line-height:1;}
+  .price-per{font-size:1rem;color:#999;margin-bottom:24px;}
+  .price-divider{border:none;border-top:1px solid rgba(255,255,255,.1);margin:24px 0;}
+  .price-includes{list-style:none;text-align:left;margin-bottom:32px;}
+  .price-includes li{padding:10px 0;color:#ccc;font-size:1rem;
+    border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;}
+  .price-includes li span.check{color:var(--orange);font-weight:800;font-size:1.1rem;}
+  .price-note{background:rgba(232,98,26,.1);border:1px solid rgba(232,98,26,.3);
+    border-radius:12px;padding:14px 18px;font-size:.88rem;color:#ddd;margin-bottom:28px;line-height:1.6;}
+  .price-note strong{color:var(--orange);}
+  .price-cta{width:100%;padding:16px;background:var(--orange);color:var(--white);
+    border:none;border-radius:30px;font-weight:800;font-size:1.1rem;cursor:pointer;transition:.25s;}
+  .price-cta:hover{background:var(--ol);transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,98,26,.4);}
+
+  /* ── HOW ── */
+  .how{background:var(--dark2);}
+  .steps{display:flex;gap:0;margin-top:50px;position:relative;}
+  .steps::before{content:'';position:absolute;top:36px;
+    left:calc(16.6% + 36px);right:calc(16.6% + 36px);
+    height:2px;background:linear-gradient(to right,var(--orange),var(--blue));}
+  .step{flex:1;text-align:center;padding:0 16px;position:relative;z-index:1;}
+  .step-num{width:72px;height:72px;border-radius:50%;
+    background:var(--orange);color:var(--white);font-size:1.6rem;font-weight:900;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
+    box-shadow:0 4px 20px rgba(232,98,26,.4);}
+  .step-title{font-weight:800;font-size:1.05rem;margin-bottom:8px;}
+  .step-desc{color:#aaa;font-size:.85rem;line-height:1.6;}
+
+  /* ── BOOKING ── */
+  .booking{background:var(--dark);}
+  .booking-container{background:var(--dark2);border:1px solid rgba(232,98,26,.3);
+    border-radius:24px;padding:50px;max-width:750px;margin:50px auto 0;}
+  .booking-title{text-align:center;font-size:1.8rem;font-weight:900;margin-bottom:8px;}
+  .booking-sub{text-align:center;color:#aaa;margin-bottom:36px;}
+  .form-group{margin-bottom:22px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  label{display:block;color:var(--orange);font-weight:600;font-size:.85rem;
+    margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+  input,select,textarea{width:100%;background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.15);color:var(--cream);
+    padding:13px 16px;border-radius:12px;font-size:.95rem;transition:.2s;
+    outline:none;font-family:inherit;}
+  input:focus,select:focus,textarea:focus{border-color:var(--orange);background:rgba(232,98,26,.08);}
+  select option{background:var(--dark2);color:var(--cream);}
+  .time-slots{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+  .time-btn{padding:10px 18px;border-radius:20px;border:1px solid rgba(255,255,255,.2);
+    background:transparent;color:var(--cream);cursor:pointer;font-size:.9rem;transition:.2s;}
+  .time-btn:hover,.time-btn.selected{background:var(--orange);border-color:var(--orange);color:var(--white);font-weight:700;}
+  .submit-btn{width:100%;padding:16px;background:var(--orange);color:var(--white);
+    border:none;border-radius:30px;font-size:1.1rem;font-weight:800;
+    cursor:pointer;transition:.25s;margin-top:10px;letter-spacing:.5px;}
+  .submit-btn:hover{background:var(--ol);transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,98,26,.4);}
+
+  /* ── TESTIMONIALS ── */
+  .testimonials{background:var(--dark2);}
+  .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:50px;}
+  .test-card{background:var(--dark);border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;padding:28px;transition:.2s;}
+  .test-card:hover{border-color:rgba(232,98,26,.4);}
+  .test-stars{color:var(--orange);font-size:1.1rem;margin-bottom:14px;}
+  .test-text{color:#ccc;font-size:.9rem;line-height:1.7;margin-bottom:20px;font-style:italic;}
+  .test-author{display:flex;align-items:center;gap:12px;}
+  .test-avatar{width:44px;height:44px;border-radius:50%;
+    background:linear-gradient(135deg,var(--orange),var(--blue));
+    display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+  .test-name{font-weight:700;font-size:.9rem;}
+  .test-loc{color:#777;font-size:.8rem;}
+
+  /* ── CONTACT ── */
+  .contact{background:var(--dark);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;margin-top:50px;}
+  .contact-info{display:flex;flex-direction:column;gap:20px;}
+  .contact-item{display:flex;align-items:center;gap:16px;}
+  .contact-icon{width:50px;height:50px;border-radius:12px;
+    background:rgba(232,98,26,.15);border:1px solid rgba(232,98,26,.3);
+    display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+  .contact-text strong{display:block;font-weight:700;margin-bottom:2px;}
+  .contact-text span{color:#aaa;font-size:.9rem;}
+  .whatsapp-btn{display:inline-flex;align-items:center;gap:10px;
+    background:#25D366;color:var(--white);padding:14px 28px;
+    border-radius:30px;font-weight:700;text-decoration:none;font-size:1rem;transition:.2s;margin-top:10px;}
+  .whatsapp-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,211,102,.35);}
+
+  /* ── FOOTER ── */
+  footer{background:var(--dark2);border-top:1px solid rgba(232,98,26,.3);
+    text-align:center;padding:30px 20px;}
+  .footer-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;}
+  .footer-logo svg{width:36px;height:36px;}
+  .footer-brand{font-size:1.6rem;font-weight:900;}
+  .footer-brand .tu{color:var(--white);}
+  .footer-brand .chef{color:var(--orange);}
+  .footer-text{color:#666;font-size:.85rem;}
+
+  /* ── SUCCESS ── */
+  .success-msg{display:none;background:linear-gradient(135deg,rgba(45,106,45,.3),rgba(45,106,45,.1));
+    border:1px solid var(--green);border-radius:16px;padding:24px;text-align:center;margin-top:20px;}
+  .success-msg.show{display:block;}
+  .success-msg h3{color:#5cb85c;font-size:1.3rem;margin-bottom:8px;}
+  .success-msg p{color:#aaa;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:768px){
+    .hero h1{font-size:2.4rem;}
+    .about-grid,.contact-grid{grid-template-columns:1fr;}
+    .test-grid{grid-template-columns:1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .steps{flex-direction:column;}
+    .steps::before{display:none;}
+    .step{margin-bottom:30px;}
+    .booking-container{padding:30px 20px;}
+    nav{padding:10px 16px;}
+    .nav-links{display:none;}
+    .price-card{padding:36px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">
+    <!-- Logo SVG mini -->
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="48" fill="#2a1a0e" stroke="#E8621A" stroke-width="3"/>
+      <!-- globe -->
+      <circle cx="50" cy="54" r="22" fill="#1A4D8F"/>
+      <ellipse cx="50" cy="54" rx="10" ry="22" fill="none" stroke="#1565a0" stroke-width="1"/>
+      <line x1="28" y1="54" x2="72" y2="54" stroke="#1565a0" stroke-width="1"/>
+      <ellipse cx="50" cy="54" rx="22" ry="8" fill="none" stroke="#1565a0" stroke-width="1"/>
+      <!-- land masses simplified -->
+      <ellipse cx="44" cy="48" rx="8" ry="6" fill="#2D6A2D" opacity="0.9"/>
+      <ellipse cx="57" cy="55" rx="6" ry="5" fill="#2D6A2D" opacity="0.8"/>
+      <!-- chef hat -->
+      <ellipse cx="50" cy="34" rx="14" ry="4" fill="#F0F0F0"/>
+      <rect x="38" y="25" width="24" height="12" rx="8" fill="white"/>
+      <ellipse cx="50" cy="25" rx="9" ry="7" fill="white"/>
+      <!-- fork left -->
+      <line x1="28" y1="38" x2="28" y2="68" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
+      <line x1="25" y1="38" x2="25" y2="46" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+      <line x1="28" y1="38" x2="28" y2="46" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+      <line x1="31" y1="38" x2="31" y2="46" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+      <!-- spatula right -->
+      <line x1="72" y1="38" x2="72" y2="68" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
+      <rect x="66" y="34" width="12" height="8" rx="2" fill="#bbb"/>
+      <!-- knife bottom -->
+      <line x1="36" y1="76" x2="64" y2="76" stroke="#ccc" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="56" y="73" width="8" height="6" rx="2" fill="#c8860a"/>
+      <!-- ribbon mexican -->
+      <rect x="30" y="78" width="12" height="4" rx="1" fill="#006847"/>
+      <rect x="42" y="78" width="12" height="4" rx="1" fill="white"/>
+      <rect x="54" y="78" width="12" height="4" rx="1" fill="#CE1126"/>
+      <!-- text Tu -->
+      <text x="31" y="73" font-family="Arial Black,sans-serif" font-size="11" font-weight="900" fill="white">Tu</text>
+      <text x="44" y="73" font-family="Arial Black,sans-serif" font-size="11" font-weight="900" fill="#E8621A">Chef</text>
+      <!-- plane -->
+      <text x="66" y="36" font-size="10" fill="#F5E6C8">✈</text>
+    </svg>
+    <div class="nav-brand"><span class="tu">Tu</span><span class="chef">Chef</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">Servicios</a></li>
+    <li><a href="#plans">Precio</a></li>
+    <li><a href="#how">¿Cómo funciona?</a></li>
+    <li><a href="#booking">Agendar</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Agendar Clase</button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-content">
+    <!-- Logo grande en hero -->
+    <div class="hero-logo">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="#2a1a0e" stroke="#E8621A" stroke-width="2.5"/>
+        <circle cx="50" cy="54" r="22" fill="#1A4D8F"/>
+        <ellipse cx="50" cy="54" rx="10" ry="22" fill="none" stroke="#1565a0" stroke-width="1"/>
+        <line x1="28" y1="54" x2="72" y2="54" stroke="#1565a0" stroke-width="1"/>
+        <ellipse cx="50" cy="54" rx="22" ry="8" fill="none" stroke="#1565a0" stroke-width="1"/>
+        <ellipse cx="44" cy="48" rx="8" ry="6" fill="#2D6A2D" opacity="0.9"/>
+        <ellipse cx="57" cy="55" rx="6" ry="5" fill="#2D6A2D" opacity="0.8"/>
+        <ellipse cx="50" cy="34" rx="14" ry="4" fill="#F0F0F0"/>
+        <rect x="38" y="25" width="24" height="12" rx="8" fill="white"/>
+        <ellipse cx="50" cy="25" rx="9" ry="7" fill="white"/>
+        <line x1="28" y1="38" x2="28" y2="68" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
+        <line x1="25" y1="38" x2="25" y2="46" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+        <line x1="28" y1="38" x2="28" y2="46" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+        <line x1="31" y1="38" x2="31" y2="46" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+        <line x1="72" y1="38" x2="72" y2="68" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
+        <rect x="66" y="34" width="12" height="8" rx="2" fill="#bbb"/>
+        <line x1="36" y1="76" x2="64" y2="76" stroke="#ccc" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="56" y="73" width="8" height="6" rx="2" fill="#c8860a"/>
+        <rect x="30" y="78" width="12" height="4" rx="1" fill="#006847"/>
+        <rect x="42" y="78" width="12" height="4" rx="1" fill="white"/>
+        <rect x="54" y="78" width="12" height="4" rx="1" fill="#CE1126"/>
+        <text x="31" y="73" font-family="Arial Black,sans-serif" font-size="11" font-weight="900" fill="white">Tu</text>
+        <text x="44" y="73" font-family="Arial Black,sans-serif" font-size="11" font-weight="900" fill="#E8621A">Chef</text>
+        <text x="66" y="36" font-size="10" fill="#F5E6C8">✈</text>
+      </svg>
+    </div>
+    <div class="hero-badge">🍳 Clases de Cocina a Domicilio</div>
+    <h1><span class="tu">Tu</span><span class="chef">Chef</span><br>en casa</h1>
+    <p>Aprende a cocinar con un chef profesional en la comodidad de tu hogar.<br>Clases personalizadas para todos los niveles.</p>
+    <div class="hero-btns">
+      <a href="#booking" class="btn-primary">🗓️ Agendar mi clase</a>
+      <a href="#plans" class="btn-secondary">Ver precio</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">+200</div><div class="stat-label">Clientes felices</div></div>
+      <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Tipos de cocina</div></div>
+      <div class="stat"><div class="stat-num">5★</div><div class="stat-label">Calificación</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-tag">¿Qué ofrecemos?</div>
+    <h2 class="section-title">Cocina del mundo,<br>en tu cocina</h2>
+    <p class="section-sub">Un chef profesional va a tu casa y te enseña a preparar los platillos que siempre quisiste dominar.</p>
+    <div class="about-grid">
+      <div class="about-features">
+        <div class="feature-card">
+          <div class="feat-icon">👨‍🍳</div>
+          <div><div class="feat-title">Chefs certificados</div><div class="feat-desc">Todos nuestros instructores tienen formación profesional y años de experiencia en cocinas de alto nivel.</div></div>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🏠</div>
+          <div><div class="feat-title">En tu domicilio</div><div class="feat-desc">Nos adaptamos a tu espacio, tus horarios y tus ingredientes. Sin desplazamientos, sin complicaciones.</div></div>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🔪</div>
+          <div><div class="feat-title">Utensilios incluidos</div><div class="feat-desc">TuChef lleva todos los instrumentos y herramientas necesarios. Tú solo aportas los ingredientes.</div></div>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🌍</div>
+          <div><div class="feat-title">Cocina internacional</div><div class="feat-desc">Dominamos las mejores tradiciones culinarias del mundo para llevarte una experiencia única.</div></div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div style="font-size:3rem;margin-bottom:16px;">🌮🍝🥘🍣🥐🍜</div>
+        <h3 style="font-size:1.3rem;font-weight:800;margin-bottom:8px;">Tipos de cocina disponibles</h3>
+        <p style="color:#aaa;font-size:.9rem;margin-bottom:20px;">Elige la que más te inspire</p>
+        <div class="cuisines">
+          <span class="cuisine-tag">🌮 Mexicana</span>
+          <span class="cuisine-tag">🍝 Italiana</span>
+          <span class="cuisine-tag">🍣 Japonesa</span>
+          <span class="cuisine-tag">🥐 Francesa</span>
+          <span class="cuisine-tag">🥘 Española</span>
+          <span class="cuisine-tag">🍜 Asiática</span>
+          <span class="cuisine-tag">🫕 Mediterránea</span>
+          <span class="cuisine-tag">🧁 Repostería</span>
+          <span class="cuisine-tag">🥩 Parrilla</span>
+          <span class="cuisine-tag">🥗 Saludable</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICE ── -->
+<section class="plans" id="plans">
+  <div class="container">
+    <div class="section-tag">Precio</div>
+    <h2 class="section-title">Inversión por clase</h2>
+    <p class="section-sub">Un solo precio claro y sin sorpresas. Paga solo por lo que necesitas.</p>
+    <div class="price-wrap">
+      <div class="price-card">
+        <div class="price-icon">👨‍🍳</div>
+        <div class="price-amount">$530</div>
+        <div class="price-per">por clase · precio por persona</div>
+        <hr class="price-divider"/>
+        <ul class="price-includes">
+          <li><span class="check">✓</span> Clase completa de 2 horas con chef profesional</li>
+          <li><span class="check">✓</span> Todos los utensilios e instrumentos proporcionados por TuChef</li>
+          <li><span class="check">✓</span> Recetario digital con los platillos aprendidos</li>
+          <li><span class="check">✓</span> Atención personalizada 100% a tu domicilio</li>
+          <li><span class="check">✓</span> Cocina de tu elección entre todas las disponibles</li>
+        </ul>
+        <div class="price-note">
+          🛒 <strong>Nota:</strong> Los ingredientes son apartados y proporcionados por el cliente con anticipación. Al confirmar tu reserva te enviamos la lista completa de lo que necesitas.
+        </div>
+        <button class="price-cta" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">🗓️ Reservar mi clase ahora</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW ── -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-tag">¿Cómo funciona?</div>
+    <h2 class="section-title">Sencillo en 3 pasos</h2>
+    <p class="section-sub">Agenda tu primera clase en minutos y empieza a cocinar como un profesional.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Agenda tu clase</div>
+        <div class="step-desc">Llena el formulario, elige el tipo de cocina, fecha y horario que más te convenga.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Prepara tus ingredientes</div>
+        <div class="step-desc">Te enviamos la lista de insumos para que los tengas listos antes de la clase.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">¡A cocinar!</div>
+        <div class="step-desc">Tu chef llega a tu domicilio con todos los utensilios. ¡Solo disfruta y aprende!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BOOKING ── -->
+<section class="booking" id="booking">
+  <div class="container">
+    <div class="section-tag">Agenda</div>
+    <h2 class="section-title" style="text-align:center">Reserva tu clase</h2>
+    <div class="booking-container">
+      <h3 class="booking-title">🗓️ Agendar cita</h3>
+      <p class="booking-sub">Completa el formulario y confirmaremos tu reserva en menos de 24 horas.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="name" placeholder="Tu nombre"/>
+        </div>
+        <div class="form-group">
+          <label>Teléfono / WhatsApp</label>
+          <input type="tel" id="phone" placeholder="+52 777 249 6970"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="email" placeholder="tu@correo.com"/>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo de cocina</label>
+          <select id="cuisine">
+            <option value="">Seleccionar...</option>
+            <option>🌮 Mexicana</option>
+            <option>🍝 Italiana</option>
+            <option>🍣 Japonesa</option>
+            <option>🥐 Francesa</option>
+            <option>🥘 Española</option>
+            <option>🍜 Asiática</option>
+            <option>🧁 Repostería</option>
+            <option>🥩 Parrilla</option>
+            <option>🥗 Saludable</option>
+            <option>🌍 Sorpréndeme</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Número de personas</label>
+          <select id="people">
+            <option>1 persona</option>
+            <option>2 personas</option>
+            <option>3 personas</option>
+            <option>4 personas</option>
+            <option>5+ personas</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Fecha preferida</label>
+          <input type="date" id="date" min=""/>
+        </div>
+        <div class="form-group">
+          <label>Horario disponible</label>
+          <div class="time-slots" id="timeSlots">
+            <button class="time-btn" onclick="selectTime(this)">10:00 AM</button>
+            <button class="time-btn" onclick="selectTime(this)">12:00 PM</button>
+            <button class="time-btn" onclick="selectTime(this)">2:00 PM</button>
+            <button class="time-btn" onclick="selectTime(this)">4:00 PM</button>
+            <button class="time-btn" onclick="selectTime(this)">6:00 PM</button>
+            <button class="time-btn" onclick="selectTime(this)">7:00 PM</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Notas adicionales (opcional)</label>
+        <textarea id="notes" rows="3" placeholder="Alergias, preferencias, dirección aproximada..."></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="submitBooking()">✅ Confirmar reserva – $530 por persona</button>
+      <div class="success-msg" id="successMsg">
+        <h3>🎉 ¡Reserva recibida!</h3>
+        <p>Gracias por contactarnos. Te confirmaremos tu cita y enviaremos la lista de ingredientes por WhatsApp o correo en menos de 24 horas. ¡Nos vemos en tu cocina! 🍳</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="section-tag">Testimonios</div>
+    <h2 class="section-title">Lo que dicen nuestros alumnos</h2>
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">"Fue una experiencia increíble. El chef fue muy paciente y aprendí a hacer pasta fresca desde cero. ¡Mi familia quedó encantada!"</p>
+        <div class="test-author">
+          <div class="test-avatar">👩</div>
+          <div><div class="test-name">Mariana G.</div><div class="test-loc">Cuernavaca</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">"Lo contraté para una cena romántica y fue perfecto. Aprendimos a cocinar sushi juntos. ¡Muy recomendado para parejas!"</p>
+        <div class="test-author">
+          <div class="test-avatar">👨</div>
+          <div><div class="test-name">Roberto M.</div><div class="test-loc">CDMX</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">"El recetario digital es genial, ya lo he repetido varias veces en casa. El chef llega puntual y explica todo paso a paso."</p>
+        <div class="test-author">
+          <div class="test-avatar">👩</div>
+          <div><div class="test-name">Sofía R.</div><div class="test-loc">Jiutepec</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <div class="section-tag">Contacto</div>
+        <h2 class="section-title">¿Tienes dudas?<br>¡Escríbenos!</h2>
+        <p class="section-sub">Estamos listos para resolver todas tus preguntas y ayudarte a vivir la mejor experiencia culinaria.</p>
+      </div>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div class="contact-text">
+            <strong>WhatsApp</strong>
+            <span>777 249 6970</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div class="contact-text">
+            <strong>Correo</strong>
+            <span>tuchef.comidaentumesa@gmail.com</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-text">
+            <strong>Cobertura</strong>
+            <span>Jiutepec y Cuernavaca, Morelos</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🕐</div>
+          <div class="contact-text">
+            <strong>Horario de atención</strong>
+            <span>Lun – Dom, 9:00 AM – 8:00 PM</span>
+          </div>
+        </div>
+        <a class="whatsapp-btn" href="https://wa.me/527772496970" target="_blank">
+          💬 Chatear por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="48" fill="#2a1a0e" stroke="#E8621A" stroke-width="3"/>
+      <circle cx="50" cy="54" r="22" fill="#1A4D8F"/>
+      <ellipse cx="44" cy="48" rx="8" ry="6" fill="#2D6A2D"/>
+      <ellipse cx="57" cy="55" rx="6" ry="5" fill="#2D6A2D"/>
+      <ellipse cx="50" cy="34" rx="14" ry="4" fill="#F0F0F0"/>
+      <rect x="38" y="25" width="24" height="12" rx="8" fill="white"/>
+      <ellipse cx="50" cy="25" rx="9" ry="7" fill="white"/>
+      <text x="31" y="73" font-family="Arial Black,sans-serif" font-size="11" font-weight="900" fill="white">Tu</text>
+      <text x="44" y="73" font-family="Arial Black,sans-serif" font-size="11" font-weight="900" fill="#E8621A">Chef</text>
+    </svg>
+    <div class="footer-brand"><span class="tu">Tu</span><span class="chef">Chef</span></div>
+  </div>
+  <p class="footer-text">© 2025 TuChef · Clases de Cocina a Domicilio · Todos los derechos reservados</p>
+</footer>
+
+<script>
+  document.getElementById('date').min = new Date().toISOString().split('T')[0];
+  function selectTime(btn){
+    document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+  function submitBooking(){
+    const n=document.getElementById('name').value.trim();
+    const p=document.getElementById('phone').value.trim();
+    const e=document.getElementById('email').value.trim();
+    const c=document.getElementById('cuisine').value;
+    const d=document.getElementById('date').value;
+    const t=document.querySelector('.time-btn.selected');
+    if(!n||!p||!e||!c||!d||!t){alert('Por favor completa todos los campos y elige un horario.');return;}
+    const btn=document.querySelector('.submit-btn');
+    btn.disabled=true;
+    btn.textContent='✅ ¡Reserva enviada!';
+    btn.style.background='#2D6A2D';
+    document.getElementById('successMsg').classList.add('show');
+    document.getElementById('successMsg').scrollIntoView({behavior:'smooth'});
+  }
+</script>
+</body>
+</html>
